@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model users {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  name       String   @db.VarChar(255)
+  email      String   @db.VarChar(255)
+  password   String?  @db.VarChar(255)
+  isadmin    Boolean  @default(false)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @db.DateTime(0)
+
+  @@unique([name, email], map: "users_unique")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model microposts {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  content    String?  @db.VarChar(255)
+  user_id    Int?
+  created_at DateTime @default(now()) @db.DateTime(0)
+  updated_at DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model relationships {
+  id          Int      @id @default(autoincrement()) @db.UnsignedInt
+  follower_id Int?
+  followed_id Int?
+  created_at  DateTime @default(now()) @db.DateTime(0)
+  updated_at  DateTime @db.DateTime(0)
+}
